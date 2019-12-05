@@ -11,28 +11,32 @@ export class MyComponent {
   /**
    * The first name
    */
-  @Prop() first: string;
+  @Prop({ mutable: true }) first: string;
 
   /**
    * The middle name
    */
-  @Prop() middle: string;
+  @Prop({ mutable: true }) middle: string;
 
   /**
    * The last name
    */
-  @Prop() last: string;
+  @Prop({ mutable: true }) last: string;
 
   private getText(): string {
     return format(this.first, this.middle, this.last);
   }
 
   componentWillRender() {
-    console.log(this.first, this.middle, this.last);
+    console.log("component will render", {
+      first: this.first,
+      middle: this.middle,
+      last: this.last
+    });
   }
 
   componentShouldUpdate(value: any, old: any, prop: string) {
-    console.log(value, old, prop);
+    console.log("component should update", { value, old, prop });
   }
 
   updateState = () => {
@@ -42,6 +46,11 @@ export class MyComponent {
   };
 
   render() {
+    console.log("render method", {
+      first: this.first,
+      middle: this.middle,
+      last: this.last
+    });
     return (
       <Host>
         <div>Hello, World! I'm {this.getText()}</div>
