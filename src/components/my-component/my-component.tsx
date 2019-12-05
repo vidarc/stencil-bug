@@ -1,9 +1,10 @@
-import { Component, Prop, h } from '@stencil/core';
-import { format } from '../../utils/utils';
+import { Component, Prop, h, Host } from "@stencil/core";
+import shortid from "shortid";
+import { format } from "../../utils/utils";
 
 @Component({
-  tag: 'my-component',
-  styleUrl: 'my-component.css',
+  tag: "my-component",
+  styleUrl: "my-component.css",
   shadow: true
 })
 export class MyComponent {
@@ -26,7 +27,26 @@ export class MyComponent {
     return format(this.first, this.middle, this.last);
   }
 
+  componentWillRender() {
+    console.log(this.first, this.middle, this.last);
+  }
+
+  componentShouldUpdate(value: any, old: any, prop: string) {
+    console.log(value, old, prop);
+  }
+
+  updateState = () => {
+    this.first = shortid.generate();
+    this.middle = shortid.generate();
+    this.last = shortid.generate();
+  };
+
   render() {
-    return <div>Hello, World! I'm {this.getText()}</div>;
+    return (
+      <Host>
+        <div>Hello, World! I'm {this.getText()}</div>
+        <button onClick={this.updateState}>Click Me to Update State</button>
+      </Host>
+    );
   }
 }
